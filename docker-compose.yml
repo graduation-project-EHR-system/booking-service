@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  bookingService:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8090:80"
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: booking_service
+      DB_USERNAME: user
+      DB_PASSWORD: password
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: booking_service
+      MYSQL_USER: user
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_PASSWORD: password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psecret"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+
+volumes:
+  mysql_data:
+
