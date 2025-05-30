@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  bookingService:
+  booking_service:
     build:
       context: .
       dockerfile: Dockerfile
@@ -14,6 +14,7 @@ services:
       DB_DATABASE: booking_service
       DB_USERNAME: user
       DB_PASSWORD: password
+      KAFKA_BROKERS: 164.92.241.46:9093
     depends_on:
       db:
         condition: service_healthy
