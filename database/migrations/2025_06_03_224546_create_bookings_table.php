@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('status');
             $table->date('appointment_date');
             $table->time('appointment_time');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
