@@ -1,11 +1,9 @@
 <?php
+namespace App\Enums;
 
-namespace Database\Enums;
-
-enum BookingStatus: string
-{
-    case PENDING = 'pending';
+enum BookingStatus: string {
+    case PENDING   = 'pending';
     case CANCELLED = 'cancelled';
-    case NO_SHOW = 'no_show';
+    case NO_SHOW   = 'no_show';
     case COMPLETED = 'completed';
 }
