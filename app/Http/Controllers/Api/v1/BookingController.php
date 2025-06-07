@@ -6,6 +6,7 @@ use App\Data\BookingData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreBookingRequest;
 use App\Http\Requests\Api\UpdateBookingRequest;
+use App\Http\Resources\Api\BookingResource;
 use App\Services\BookingService;
 use App\Util\ApiResponse;
 use Exception;
@@ -37,7 +38,8 @@ class BookingController extends Controller
         return ApiResponse::send(
             code: Response::HTTP_OK,
             message: 'Bookings retrieved successfully',
-            data: $bookings
+            data: $bookings,
+            resource: BookingResource::class
         );
     }
 
@@ -119,7 +121,8 @@ class BookingController extends Controller
         return ApiResponse::send(
             code: Response::HTTP_OK,
             message: 'Doctor bookings retrieved successfully',
-            data: $bookings
+            data: $bookings,
+            resource: BookingResource::class
         );
     }
 
@@ -134,7 +137,8 @@ class BookingController extends Controller
         return ApiResponse::send(
             code: Response::HTTP_OK,
             message: 'Patient bookings retrieved successfully',
-            data: $bookings
+            data: $bookings,
+            resource: BookingResource::class
         );
     }
 }
