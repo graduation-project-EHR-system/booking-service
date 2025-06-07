@@ -2,6 +2,7 @@
 namespace App\Interfaces;
 
 use App\Data\BookingData;
+use App\Models\Booking;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface BookingRepositoryInterface
@@ -19,34 +20,26 @@ interface BookingRepositoryInterface
      * Get a booking by ID
      *
      * @param string $id
-     * @return BookingData|null
+     * @return Booking|null
      */
-    public function getBookingById(string $id): ?BookingData;
+    public function getBookingById(string $id): ?Booking;
 
     /**
      * Create a new booking
      *
      * @param BookingData $bookingData
-     * @return BookingData
+     * @return Booking
      */
-    public function createBooking(BookingData $bookingData): BookingData;
+    public function createBooking(BookingData $bookingData): Booking;
 
     /**
      * Update an existing booking
      *
      * @param string $id
      * @param BookingData $bookingData
-     * @return BookingData|null
+     * @return Booking|null
      */
-    public function updateBooking(string $id, BookingData $bookingData): ?BookingData;
-
-    /**
-     * Delete a booking
-     *
-     * @param string $id
-     * @return bool
-     */
-    public function deleteBooking(string $id): bool;
+    public function updateBooking(string $id, BookingData $bookingData): ?Booking;
 
     /**
      * Get bookings by doctor ID

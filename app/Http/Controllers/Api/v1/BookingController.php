@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Data\BookingData;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\StoreBookingRequest;
+use App\Http\Requests\Api\UpdateBookingRequest;
 use App\Services\BookingService;
 use App\Util\ApiResponse;
 use Exception;
@@ -43,11 +45,10 @@ class BookingController extends Controller
     /**
      * Store a newly created booking in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreBookingRequest $request): JsonResponse
     {
         try {
-            // Create DTO from request data
-            $bookingData = BookingData::from($request);
+            $bookingData = BookingData::from($request->validated());
 
             $booking = $this->bookingService->createBooking($bookingData);
 
@@ -88,10 +89,9 @@ class BookingController extends Controller
     /**
      * Update the specified booking in storage.
      */
-    public function update(Request $request, string $id): JsonResponse
+    public function update(UpdateBookingRequest $request, string $id): JsonResponse
     {
-        // Create DTO from request data
-        $bookingData = BookingData::from($request);
+        $bookingData = BookingData::from($request->validated());
 
         $booking = $this->bookingService->updateBooking($id, $bookingData);
 
@@ -104,28 +104,8 @@ class BookingController extends Controller
 
         return ApiResponse::send(
             code: Response::HTTP_OK,
-            message: 'Booking updated successfully',
+            message: 'Booking status updated successfully',
             data: $booking
-        );
-    }
-
-    /**
-     * Remove the specified booking from storage.
-     */
-    public function destroy(string $id): JsonResponse
-    {
-        $result = $this->bookingService->deleteBooking($id);
-
-        if (! $result) {
-            return ApiResponse::send(
-                code: Response::HTTP_NOT_FOUND,
-                message: 'Booking not found'
-            );
-        }
-
-        return ApiResponse::send(
-            code: Response::HTTP_OK,
-            message: 'Booking deleted successfully'
         );
     }
 

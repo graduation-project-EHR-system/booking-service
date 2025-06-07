@@ -50,46 +50,31 @@ class BookingRepository implements BookingRepositoryInterface
     /**
      * Get a booking by ID
      */
-    public function getBookingById(string $id): ?BookingData
+    public function getBookingById(string $id): ?Booking
     {
-        $booking = Booking::find($id);
-
-        if (! $booking) {
-            return null;
-        }
-
-        return BookingData::from($booking);
-
+        return Booking::find($id);
     }
 
     /**
      * Create a new booking
      */
-    public function createBooking(BookingData $bookingData): BookingData
+    public function createBooking(BookingData $bookingData): Booking
     {
         $booking = new Booking;
 
-        // Convert DTO to model attributes
         $attributes = $bookingData->toArray();
-        unset($attributes['id']); // Remove ID for creation
+        unset($attributes['id']);
 
-        foreach ($attributes as $key => $value) {
-            if ($value !== null) {
-                $booking->{$key} = $value;
-            }
-        }
-
+        $booking->fill($attributes);
         $booking->save();
 
-        // Return new booking as DTO
-        return BookingData::from($booking);
-
+        return $booking;
     }
 
     /**
      * Update an existing booking
      */
-    public function updateBooking(string $id, BookingData $bookingData): ?BookingData
+    public function updateBooking(string $id, BookingData $bookingData): ?Booking
     {
         $booking = Booking::find($id);
 
@@ -97,35 +82,13 @@ class BookingRepository implements BookingRepositoryInterface
             return null;
         }
 
-        // Convert DTO to model attributes
         $attributes = $bookingData->toArray();
-        unset($attributes['id']); // Remove ID for update
+        unset($attributes['id']);
 
-        foreach ($attributes as $key => $value) {
-            if ($value !== null) {
-                $booking->{$key} = $value;
-            }
-        }
-
+        $booking->fill($attributes);
         $booking->save();
 
-        // Return updated booking as DTO
-        return BookingData::from($booking);
-
-    }
-
-    /**
-     * Delete a booking
-     */
-    public function deleteBooking(string $id): bool
-    {
-        $booking = Booking::find($id);
-
-        if (! $booking) {
-            return false;
-        }
-
-        return $booking->delete();
+        return $booking;
     }
 
     /**

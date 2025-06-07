@@ -20,12 +20,13 @@ class Booking extends Model
      */
     protected $fillable = [
         'doctor_id',
-        'patient_id',
         'patient_name',
         'patient_national_id',
         'booked_at',
         'type',
         'status',
+        'appointment_date',
+        'appointment_time',
     ];
 
     /**

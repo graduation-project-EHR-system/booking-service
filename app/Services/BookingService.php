@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Data\BookingData;
 use App\Enums\BookingStatus;
 use App\Interfaces\BookingRepositoryInterface;
+use App\Models\Booking;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -42,25 +43,18 @@ class BookingService
      *
      * @throws Exception
      */
-    public function createBooking(BookingData $bookingData): BookingData
+    public function createBooking(BookingData $bookingData): Booking
     {
-        // Set default values if needed
-        if (empty($bookingData->booked_at)) {
-            $bookingData->booked_at = Carbon::now();
-        }
+        $bookingData->booked_at = Carbon::now();
+        $bookingData->status = BookingStatus::PENDING;
 
-        if (empty($bookingData->status)) {
-            $bookingData->status = BookingStatus::PENDING;
-        }
-
-        // Save to repository
         return $this->bookingRepository->createBooking($bookingData);
     }
 
     /**
      * Update an existing booking
      */
-    public function updateBooking(string $id, BookingData $bookingData): ?BookingData
+    public function updateBooking(string $id, BookingData $bookingData): ?Booking
     {
         // Get existing booking
         $existingBooking = $this->bookingRepository->getBookingById($id);
@@ -74,14 +68,6 @@ class BookingService
 
         // Update repository
         return $this->bookingRepository->updateBooking($id, $updatedBookingData);
-    }
-
-    /**
-     * Delete a booking
-     */
-    public function deleteBooking(string $id): bool
-    {
-        return $this->bookingRepository->deleteBooking($id);
     }
 
     /**

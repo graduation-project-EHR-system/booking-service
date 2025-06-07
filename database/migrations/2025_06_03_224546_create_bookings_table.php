@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('doctor_id')->constrained('doctors');
-            $table->string('patient_id');
             $table->string('patient_name')->nullable();
             $table->string('patient_national_id')->nullable();
             $table->dateTime('booked_at');
