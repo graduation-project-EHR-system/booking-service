@@ -109,36 +109,4 @@ class BookingController extends Controller
             data: $booking
         );
     }
-
-    /**
-     * Get bookings by doctor ID.
-     */
-    public function getByDoctor(Request $request, string $doctorId): JsonResponse
-    {
-        $perPage = (int) $request->input('per_page', 15);
-        $bookings = $this->bookingService->getBookingsByDoctorId($doctorId, $perPage, $request->all());
-
-        return ApiResponse::send(
-            code: Response::HTTP_OK,
-            message: 'Doctor bookings retrieved successfully',
-            data: $bookings,
-            resource: BookingResource::class
-        );
-    }
-
-    /**
-     * Get bookings by patient ID.
-     */
-    public function getByPatient(Request $request, string $patientId): JsonResponse
-    {
-        $perPage = (int) $request->input('per_page', 15);
-        $bookings = $this->bookingService->getBookingsByPatientId($patientId, $perPage, $request->all());
-
-        return ApiResponse::send(
-            code: Response::HTTP_OK,
-            message: 'Patient bookings retrieved successfully',
-            data: $bookings,
-            resource: BookingResource::class
-        );
-    }
 }

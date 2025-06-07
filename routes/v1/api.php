@@ -16,7 +16,3 @@ use Illuminate\Support\Facades\Route;
 
 // Booking routes
 Route::apiResource('bookings', BookingController::class);
-
-// Additional booking routes
-Route::get('doctors/{doctorId}/bookings', [BookingController::class, 'getByDoctor']);
-Route::get('patients/{patientId}/bookings', [BookingController::class, 'getByPatient']);
