@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\v1;
 
 use App\Data\BookingData;
@@ -12,15 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BookingController extends Controller
 {
-    /**
-     * @var BookingService
-     */
     private BookingService $bookingService;
 
     /**
      * BookingController constructor.
-     *
-     * @param BookingService $bookingService
      */
     public function __construct(BookingService $bookingService)
     {
@@ -29,9 +25,6 @@ class BookingController extends Controller
 
     /**
      * Display a listing of the bookings.
-     *
-     * @param Request $request
-     * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
@@ -49,16 +42,14 @@ class BookingController extends Controller
 
     /**
      * Store a newly created booking in storage.
-     *
-     * @param Request $request
-     * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
         try {
             // Create DTO from request data
-            $bookingData = BookingData::fromArray($request->all());
-            $booking     = $this->bookingService->createBooking($bookingData);
+            $bookingData = BookingData::from($request);
+
+            $booking = $this->bookingService->createBooking($bookingData);
 
             return ApiResponse::send(
                 code: Response::HTTP_CREATED,
@@ -75,9 +66,6 @@ class BookingController extends Controller
 
     /**
      * Display the specified booking.
-     *
-     * @param string $id
-     * @return JsonResponse
      */
     public function show(string $id): JsonResponse
     {
@@ -99,16 +87,13 @@ class BookingController extends Controller
 
     /**
      * Update the specified booking in storage.
-     *
-     * @param Request $request
-     * @param string $id
-     * @return JsonResponse
      */
     public function update(Request $request, string $id): JsonResponse
     {
         // Create DTO from request data
-        $bookingData = BookingData::fromArray($request->all());
-        $booking     = $this->bookingService->updateBooking($id, $bookingData);
+        $bookingData = BookingData::from($request);
+
+        $booking = $this->bookingService->updateBooking($id, $bookingData);
 
         if (! $booking) {
             return ApiResponse::send(
@@ -126,9 +111,6 @@ class BookingController extends Controller
 
     /**
      * Remove the specified booking from storage.
-     *
-     * @param string $id
-     * @return JsonResponse
      */
     public function destroy(string $id): JsonResponse
     {
@@ -149,14 +131,10 @@ class BookingController extends Controller
 
     /**
      * Get bookings by doctor ID.
-     *
-     * @param Request $request
-     * @param string $doctorId
-     * @return JsonResponse
      */
     public function getByDoctor(Request $request, string $doctorId): JsonResponse
     {
-        $perPage  = (int) $request->input('per_page', 15);
+        $perPage = (int) $request->input('per_page', 15);
         $bookings = $this->bookingService->getBookingsByDoctorId($doctorId, $perPage);
 
         return ApiResponse::send(
@@ -168,14 +146,10 @@ class BookingController extends Controller
 
     /**
      * Get bookings by patient ID.
-     *
-     * @param Request $request
-     * @param string $patientId
-     * @return JsonResponse
      */
     public function getByPatient(Request $request, string $patientId): JsonResponse
     {
-        $perPage  = (int) $request->input('per_page', 15);
+        $perPage = (int) $request->input('per_page', 15);
         $bookings = $this->bookingService->getBookingsByPatientId($patientId, $perPage);
 
         return ApiResponse::send(
