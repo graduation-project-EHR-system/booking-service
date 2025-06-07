@@ -73,16 +73,16 @@ class BookingService
     /**
      * Get bookings by doctor ID
      */
-    public function getBookingsByDoctorId(string $doctorId, int $perPage = 15): LengthAwarePaginator
+    public function getBookingsByDoctorId(string $doctorId, int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return $this->bookingRepository->getBookingsByDoctorId($doctorId, $perPage);
+        return $this->bookingRepository->getBookingsByDoctorId($doctorId, $perPage, $filters);
     }
 
     /**
      * Get bookings by patient ID
      */
-    public function getBookingsByPatientId(string $patientId, int $perPage = 15): LengthAwarePaginator
+    public function getBookingsByPatientId(string $patientId, int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        return $this->bookingRepository->getBookingsByPatientId($patientId, $perPage);
+        return $this->bookingRepository->getBookingsByPatientId($patientId, $perPage, $filters);
     }
 }

@@ -31,9 +31,8 @@ class BookingController extends Controller
     public function index(Request $request): JsonResponse
     {
         $perPage = (int) $request->input('per_page', 15);
-        $filters = $request->only(['status', 'type', 'date_from', 'date_to']);
 
-        $bookings = $this->bookingService->getAllBookings($perPage, $filters);
+        $bookings = $this->bookingService->getAllBookings($perPage, $request->all());
 
         return ApiResponse::send(
             code: Response::HTTP_OK,
@@ -115,7 +114,7 @@ class BookingController extends Controller
     public function getByDoctor(Request $request, string $doctorId): JsonResponse
     {
         $perPage = (int) $request->input('per_page', 15);
-        $bookings = $this->bookingService->getBookingsByDoctorId($doctorId, $perPage);
+        $bookings = $this->bookingService->getBookingsByDoctorId($doctorId, $perPage, $request->all());
 
         return ApiResponse::send(
             code: Response::HTTP_OK,
@@ -130,7 +129,7 @@ class BookingController extends Controller
     public function getByPatient(Request $request, string $patientId): JsonResponse
     {
         $perPage = (int) $request->input('per_page', 15);
-        $bookings = $this->bookingService->getBookingsByPatientId($patientId, $perPage);
+        $bookings = $this->bookingService->getBookingsByPatientId($patientId, $perPage, $request->all());
 
         return ApiResponse::send(
             code: Response::HTTP_OK,

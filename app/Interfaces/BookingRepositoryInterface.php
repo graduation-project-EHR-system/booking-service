@@ -46,16 +46,18 @@ interface BookingRepositoryInterface
      *
      * @param string $doctorId
      * @param int $perPage
+     * @param array $filters
      * @return LengthAwarePaginator
      */
-    public function getBookingsByDoctorId(string $doctorId, int $perPage = 15): LengthAwarePaginator;
+    public function getBookingsByDoctorId(string $doctorId, int $perPage = 15, array $filters = []): LengthAwarePaginator;
 
     /**
      * Get bookings by patient ID
      *
      * @param string $patientId
      * @param int $perPage
+     * @param array $filters
      * @return LengthAwarePaginator
      */
-    public function getBookingsByPatientId(string $patientId, int $perPage = 15): LengthAwarePaginator;
+    public function getBookingsByPatientId(string $patientId, int $perPage = 15, array $filters = []): LengthAwarePaginator;
 }

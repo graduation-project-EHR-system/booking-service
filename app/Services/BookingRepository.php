@@ -16,33 +16,11 @@ class BookingRepository implements BookingRepositoryInterface
     {
         $query = Booking::query();
 
-        // Apply filters if any
-        if (! empty($filters['status'])) {
-            $query->where('status', $filters['status']);
-        }
-
-        if (! empty($filters['type'])) {
-            $query->where('type', $filters['type']);
-        }
-
-        if (! empty($filters['date_from'])) {
-            $query->where('appointment_date', '>=', $filters['date_from']);
-        }
-
-        if (! empty($filters['date_to'])) {
-            $query->where('appointment_date', '<=', $filters['date_to']);
-        }
-
-        // Get paginated results
-        $bookings = $query->orderBy('created_at', 'desc')->paginate($perPage);
-
-        // Transform to DTOs
-        $bookings->setCollection(
-            $bookings->getCollection()->map(function ($booking) {
-                return BookingData::from($booking);
-
-            })
-        );
+        $bookings = $query
+            ->orderBy('appointment_date', 'desc')
+            ->orderBy('appointment_time', 'desc')
+            ->filter($filters)
+            ->paginate($perPage);
 
         return $bookings;
     }
@@ -94,20 +72,13 @@ class BookingRepository implements BookingRepositoryInterface
     /**
      * Get bookings by doctor ID
      */
-    public function getBookingsByDoctorId(string $doctorId, int $perPage = 15): LengthAwarePaginator
+    public function getBookingsByDoctorId(string $doctorId, int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         $bookings = Booking::where('doctor_id', $doctorId)
             ->orderBy('appointment_date', 'asc')
             ->orderBy('appointment_time', 'asc')
+            ->filter($filters)
             ->paginate($perPage);
-
-        // Transform to DTOs
-        $bookings->setCollection(
-            $bookings->getCollection()->map(function ($booking) {
-                return BookingData::from($booking);
-
-            })
-        );
 
         return $bookings;
     }
@@ -115,19 +86,13 @@ class BookingRepository implements BookingRepositoryInterface
     /**
      * Get bookings by patient ID
      */
-    public function getBookingsByPatientId(string $patientId, int $perPage = 15): LengthAwarePaginator
+    public function getBookingsByPatientId(string $patientId, int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
         $bookings = Booking::where('patient_id', $patientId)
             ->orderBy('appointment_date', 'asc')
             ->orderBy('appointment_time', 'asc')
+            ->filter($filters)
             ->paginate($perPage);
-
-        // Transform to DTOs
-        $bookings->setCollection(
-            $bookings->getCollection()->map(function ($booking) {
-                return BookingData::from($booking);
-            })
-        );
 
         return $bookings;
     }
