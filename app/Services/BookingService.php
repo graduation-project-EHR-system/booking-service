@@ -69,20 +69,4 @@ class BookingService
         // Update repository
         return $this->bookingRepository->updateBooking($id, $updatedBookingData);
     }
-
-    /**
-     * Get bookings by doctor ID
-     */
-    public function getBookingsByDoctorId(string $doctorId, int $perPage = 15, array $filters = []): LengthAwarePaginator
-    {
-        return $this->bookingRepository->getBookingsByDoctorId($doctorId, $perPage, $filters);
-    }
-
-    /**
-     * Get bookings by patient ID
-     */
-    public function getBookingsByPatientId(string $patientId, int $perPage = 15, array $filters = []): LengthAwarePaginator
-    {
-        return $this->bookingRepository->getBookingsByPatientId($patientId, $perPage, $filters);
-    }
 }
