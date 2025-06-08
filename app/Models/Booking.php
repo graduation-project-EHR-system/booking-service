@@ -3,6 +3,7 @@ namespace App\Models;
 
 use App\Enums\BookingType;
 use App\Enums\BookingStatus;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Booking extends Model
 {
-    use HasFactory, SoftDeletes, HasUuids;
+    use HasFactory, SoftDeletes, HasUuids, Filterable;
 
     /**
      * The attributes that are mass assignable.
