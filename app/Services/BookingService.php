@@ -33,7 +33,7 @@ class BookingService
     /**
      * Get a booking by ID
      */
-    public function getBookingById(string $id): ?BookingData
+    public function getBookingById(string $id): ?Booking
     {
         return $this->bookingRepository->getBookingById($id);
     }

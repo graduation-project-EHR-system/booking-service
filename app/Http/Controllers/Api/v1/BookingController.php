@@ -83,7 +83,7 @@ class BookingController extends Controller
         return ApiResponse::send(
             code: Response::HTTP_OK,
             message: 'Booking retrieved successfully',
-            data: $booking
+            data: new BookingResource($booking)
         );
     }
 
@@ -106,7 +106,7 @@ class BookingController extends Controller
         return ApiResponse::send(
             code: Response::HTTP_OK,
             message: 'Booking status updated successfully',
-            data: $booking
+            data: new BookingResource($booking)
         );
     }
 }
