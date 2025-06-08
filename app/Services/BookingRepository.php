@@ -14,10 +14,7 @@ class BookingRepository implements BookingRepositoryInterface
      */
     public function getAllBookings(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        $query = Booking::query();
-
-        $bookings = $query
-            ->orderBy('appointment_date', 'desc')
+        $bookings = Booking::orderBy('appointment_date', 'desc')
             ->orderBy('appointment_time', 'desc')
             ->filter($filters)
             ->paginate($perPage);
