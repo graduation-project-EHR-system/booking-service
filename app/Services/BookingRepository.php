@@ -16,6 +16,7 @@ class BookingRepository implements BookingRepositoryInterface
     {
         $bookings = Booking::orderBy('appointment_date', 'desc')
             ->orderBy('appointment_time', 'desc')
+            ->with('doctor')
             ->filter($filters)
             ->paginate($perPage);
 
@@ -27,7 +28,7 @@ class BookingRepository implements BookingRepositoryInterface
      */
     public function getBookingById(string $id): ?Booking
     {
-        return Booking::find($id);
+        return Booking::with('doctor')->find($id);
     }
 
     /**
