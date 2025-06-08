@@ -4,5 +4,5 @@ namespace App\Enums;
 
 enum Topic: string
 {
-    case DOCTOR_CREATED = 'doctor.created';
+    case USER_CREATED = 'user.created';
 }

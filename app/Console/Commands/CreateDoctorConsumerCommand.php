@@ -16,7 +16,7 @@ class CreateDoctorConsumerCommand extends Command
         $this->info('Start consuming doctor created events');
 
         app(EventConsumer::class)
-            ->onTopic(Topic::DOCTOR_CREATED)
+            ->onTopic(Topic::USER_CREATED)
             ->withHandler(new CreateDoctorConsumer())
             ->consume();
     }
