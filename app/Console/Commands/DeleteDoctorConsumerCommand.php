@@ -19,7 +19,7 @@ class DeleteDoctorConsumerCommand extends Command
         $this->info('Start consuming doctor deleted events');
 
         app(EventConsumer::class)
-            ->onTopic(Topic::USER_CREATED)
+            ->onTopic(Topic::USER_DELETED)
             ->withHandler(new DeleteDoctorConsumer())
             ->consume();
 
