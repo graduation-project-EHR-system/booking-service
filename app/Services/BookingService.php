@@ -63,10 +63,10 @@ class BookingService
             return null;
         }
 
-        // Merge existing data with new data
-        $updatedBookingData = $existingBooking->merge($bookingData);
-
         // Update repository
-        return $this->bookingRepository->updateBooking($id, $updatedBookingData);
+        return $this->bookingRepository->updateBooking(
+            $id,
+            $bookingData
+        );
     }
 }

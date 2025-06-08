@@ -56,7 +56,7 @@ class BookingController extends Controller
             return ApiResponse::send(
                 code: Response::HTTP_CREATED,
                 message: 'Booking created successfully',
-                data: $booking
+                data: new BookingResource($booking)
             );
         } catch (Exception $e) {
             return ApiResponse::send(
@@ -92,9 +92,17 @@ class BookingController extends Controller
      */
     public function update(UpdateBookingRequest $request, string $id): JsonResponse
     {
-        $bookingData = BookingData::from($request->validated());
+        $oldBooking = $this->bookingService->getBookingById($id);
 
-        $booking = $this->bookingService->updateBooking($id, $bookingData);
+        $booking = $this->bookingService->updateBooking(
+            $id,
+             BookingData::from(
+                    array_merge(
+                        $oldBooking->attributesToArray(),
+                        $request->validated(),
+                    )
+                )
+            );
 
         if (! $booking) {
             return ApiResponse::send(
