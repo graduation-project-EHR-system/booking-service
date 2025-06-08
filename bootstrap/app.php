@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Middleware\EnforceJsonResponseForApiRequests;
-use App\Providers\BookingServiceProvider;
+use App\Providers\RepositoryServiceProvider;
+
 use App\Util\ApiResponse;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -32,6 +33,6 @@ return Application::configure(basePath: dirname(__DIR__))
         });
     })
     ->withProviders([
-        BookingServiceProvider::class,
+        RepositoryServiceProvider::class,
     ])
     ->create();

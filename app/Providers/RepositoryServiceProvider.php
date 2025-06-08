@@ -2,10 +2,12 @@
 namespace App\Providers;
 
 use App\Interfaces\BookingRepositoryInterface;
+use App\Interfaces\DoctorRepositoryInterface;
 use App\Services\BookingRepository;
+use App\Services\DoctorRepository;
 use Illuminate\Support\ServiceProvider;
 
-class BookingServiceProvider extends ServiceProvider
+class RepositoryServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -13,6 +15,7 @@ class BookingServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(BookingRepositoryInterface::class, BookingRepository::class);
+        $this->app->bind(DoctorRepositoryInterface::class, DoctorRepository::class);
     }
 
     /**
