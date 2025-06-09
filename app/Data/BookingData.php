@@ -12,6 +12,7 @@ class BookingData extends Data
     public function __construct(
         public ?string $id = null,
         public ?string $doctor_id = null,
+        public ?string $patient_id = null,
         public ?string $patient_name = null,
         public ?string $patient_national_id = null,
         public ?string $booked_at = null,

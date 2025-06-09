@@ -6,20 +6,22 @@ use App\Data\BookingData;
 use App\Enums\BookingStatus;
 use App\Interfaces\BookingRepositoryInterface;
 use App\Models\Booking;
+use App\Services\External\PatientProfileService;
+
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class BookingService
 {
-    private BookingRepositoryInterface $bookingRepository;
-
     /**
      * BookingService constructor.
      */
-    public function __construct(BookingRepositoryInterface $bookingRepository)
+    public function __construct(
+        protected BookingRepositoryInterface $bookingRepository,
+        protected PatientProfileService $patientProfileService
+        )
     {
-        $this->bookingRepository = $bookingRepository;
     }
 
     /**
@@ -45,10 +47,18 @@ class BookingService
      */
     public function createBooking(BookingData $bookingData): Booking
     {
-        $bookingData->booked_at = Carbon::now();
-        $bookingData->status = BookingStatus::PENDING;
+        try{
+            $bookingData->booked_at = Carbon::now();
+            $bookingData->status = BookingStatus::PENDING;
 
-        return $this->bookingRepository->createBooking($bookingData);
+            $patientProfile = $this->patientProfileService->getById($bookingData->patient_id);
+
+            $bookingData->patient_name = $patientProfile->firstName . ' ' . $patientProfile->lastName;
+
+            return $this->bookingRepository->createBooking($bookingData);
+        }catch (Exception $e){
+            throw $e;
+        }
     }
 
     /**

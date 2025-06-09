@@ -36,7 +36,7 @@ return [
     ],
 
     'patient_profile' => [
-        'base_url' => env('PATIENT_PROFILE_BASE_URL', 'http://164.92.241.46/patient-profile'),
+        'base_url' => env('PATIENT_PROFILE_BASE_URL', 'https://be.hospital1.life-record.buildora.app/patient-profile'),
         'api_key' => env('PATIENT_PROFILE_API_KEY', 123456),
     ],
 ];
