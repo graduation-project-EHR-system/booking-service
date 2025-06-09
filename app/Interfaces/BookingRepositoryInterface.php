@@ -3,6 +3,7 @@ namespace App\Interfaces;
 
 use App\Data\BookingData;
 use App\Models\Booking;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface BookingRepositoryInterface
@@ -40,4 +41,6 @@ interface BookingRepositoryInterface
      * @return Booking|null
      */
     public function updateBooking(string $id, BookingData $bookingData): ?Booking;
+
+    public function getCountForLastDays(int $numberOfDays): Collection;
 }

@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Data\BookingData;
 use App\Interfaces\BookingRepositoryInterface;
 use App\Models\Booking;
+use Illuminate\Database\Eloquent\Collection;
+
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class BookingRepository implements BookingRepositoryInterface
@@ -53,5 +55,13 @@ class BookingRepository implements BookingRepositoryInterface
         $booking->update($bookingData->toArray());
 
         return $booking;
+    }
+
+    public function getCountForLastDays(int $numberOfDays): Collection
+    {
+        return Booking::where('created_at', '>=', now()->subDays($numberOfDays))
+            ->groupBy('created_at')
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->get();
     }
 }

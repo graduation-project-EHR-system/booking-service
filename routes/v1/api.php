@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\v1\BookingController;
+use App\Http\Controllers\Api\v1\GetAnalyticsController;
 use App\Http\Controllers\Api\v1\GetLookupDoctors;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +20,5 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('bookings', BookingController::class);
 
 Route::get('lookup/doctors', GetLookupDoctors::class);
+
+Route::get('analytics' , GetAnalyticsController::class);
