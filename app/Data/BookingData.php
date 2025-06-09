@@ -5,13 +5,16 @@ namespace App\Data;
 use App\Enums\BookingStatus;
 use App\Enums\BookingType;
 use Carbon\Carbon;
+use Spatie\LaravelData\Attributes\Hidden;
 use Spatie\LaravelData\Data;
 
 class BookingData extends Data
 {
     public function __construct(
+        #[Hidden]
         public ?string $id = null,
         public ?string $doctor_id = null,
+        #[Hidden]
         public ?string $patient_id = null,
         public ?string $patient_name = null,
         public ?string $patient_national_id = null,

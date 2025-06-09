@@ -36,16 +36,7 @@ class BookingRepository implements BookingRepositoryInterface
      */
     public function createBooking(BookingData $bookingData): Booking
     {
-        $booking = new Booking;
-
-        $attributes = $bookingData->toArray();
-        unset($attributes['id']);
-        unset($attributes['patient_id']);
-        
-        $booking->fill($attributes);
-        $booking->save();
-
-        return $booking;
+        return Booking::create($bookingData->toArray());
     }
 
     /**
@@ -59,40 +50,8 @@ class BookingRepository implements BookingRepositoryInterface
             return null;
         }
 
-        $attributes = $bookingData->toArray();
-        unset($attributes['id']);
-
-        $booking->fill($attributes);
-        $booking->save();
+        $booking->update($bookingData->toArray());
 
         return $booking;
-    }
-
-    /**
-     * Get bookings by doctor ID
-     */
-    public function getBookingsByDoctorId(string $doctorId, int $perPage = 15, array $filters = []): LengthAwarePaginator
-    {
-        $bookings = Booking::where('doctor_id', $doctorId)
-            ->orderBy('appointment_date', 'asc')
-            ->orderBy('appointment_time', 'asc')
-            ->filter($filters)
-            ->paginate($perPage);
-
-        return $bookings;
-    }
-
-    /**
-     * Get bookings by patient ID
-     */
-    public function getBookingsByPatientId(string $patientId, int $perPage = 15, array $filters = []): LengthAwarePaginator
-    {
-        $bookings = Booking::where('patient_id', $patientId)
-            ->orderBy('appointment_date', 'asc')
-            ->orderBy('appointment_time', 'asc')
-            ->filter($filters)
-            ->paginate($perPage);
-
-        return $bookings;
     }
 }
