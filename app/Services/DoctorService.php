@@ -13,6 +13,6 @@ class DoctorService
 
     public function getLookup(): Collection
     {
-        return $this->doctorRepository->getAll(['id', 'name', 'specialization']);
+        return $this->doctorRepository->getAll(['id', 'name']);
     }
 }
