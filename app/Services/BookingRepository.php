@@ -40,7 +40,8 @@ class BookingRepository implements BookingRepositoryInterface
 
         $attributes = $bookingData->toArray();
         unset($attributes['id']);
-
+        unset($attributes['patient_id']);
+        
         $booking->fill($attributes);
         $booking->save();
 
