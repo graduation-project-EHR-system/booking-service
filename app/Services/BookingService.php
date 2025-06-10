@@ -85,12 +85,11 @@ class BookingService
 
     protected function validateAppointmentTime(BookingData $bookingData): void
     {
-        $isValidAppointmentTime = DoctorAvailability::where('doctor_id', $bookingData->doctor_id)
-            ->whereAll([
-                'date' => $bookingData->appointment_date,
-                'from' => '<=', $bookingData->appointment_time,
-                'to' => '>=', $bookingData->appointment_time,
-            ])
+        $isValidAppointmentTime = DoctorAvailability::query()
+            ->where('doctor_id', $bookingData->doctor_id)
+            ->where('date', $bookingData->appointment_date)
+            ->where('from', '<=', $bookingData->appointment_time)
+            ->where('to', '>=', $bookingData->appointment_time)
             ->exists();
 
         throw_if(! $isValidAppointmentTime, InvalidBookingException::dueToInvalidAppointmentTime());
