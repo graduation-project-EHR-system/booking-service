@@ -27,7 +27,7 @@ class CreateDoctorAvailabilityConsumerCommand extends Command
      */
     public function handle()
     {
-        $this->info('Start consuming doctor created events');
+        $this->info('Start consuming doctor availability created events');
 
         app(EventConsumer::class)
             ->onTopic(\App\Enums\Topic::DOCTOR_AVAILABILITY_CREATED)
