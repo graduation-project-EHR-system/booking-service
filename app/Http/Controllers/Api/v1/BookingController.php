@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Data\BookingData;
+use App\Exceptions\InvalidBookingException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreBookingRequest;
 use App\Http\Requests\Api\UpdateBookingRequest;
@@ -58,9 +59,14 @@ class BookingController extends Controller
                 message: 'Booking created successfully',
                 data: new BookingResource($booking)
             );
-        } catch (Exception $e) {
+        } catch (InvalidBookingException $e) {
             return ApiResponse::send(
                 code: Response::HTTP_BAD_REQUEST,
+                message: $e->getMessage()
+            );
+        } catch (Exception $e) {
+            return ApiResponse::send(
+                code: Response::HTTP_INTERNAL_SERVER_ERROR,
                 message: $e->getMessage()
             );
         }
@@ -92,11 +98,12 @@ class BookingController extends Controller
      */
     public function update(UpdateBookingRequest $request, string $id): JsonResponse
     {
-        $oldBooking = $this->bookingService->getBookingById($id);
+        try {
+            $oldBooking = $this->bookingService->getBookingById($id);
 
-        $booking = $this->bookingService->updateBooking(
-            $id,
-             BookingData::from(
+            $booking = $this->bookingService->updateBooking(
+                $id,
+                BookingData::from(
                     array_merge(
                         $oldBooking->attributesToArray(),
                         $request->validated(),
@@ -104,17 +111,28 @@ class BookingController extends Controller
                 )
             );
 
-        if (! $booking) {
+            if (! $booking) {
+                return ApiResponse::send(
+                    code: Response::HTTP_NOT_FOUND,
+                    message: 'Booking not found'
+                );
+            }
+
             return ApiResponse::send(
-                code: Response::HTTP_NOT_FOUND,
-                message: 'Booking not found'
+                code: Response::HTTP_OK,
+                message: 'Booking status updated successfully',
+                data: new BookingResource($booking)
+            );
+        } catch (InvalidBookingException $e) {
+            return ApiResponse::send(
+                code: Response::HTTP_BAD_REQUEST,
+                message: $e->getMessage()
+            );
+        } catch (Exception $e) {
+            return ApiResponse::send(
+                code: Response::HTTP_INTERNAL_SERVER_ERROR,
+                message: $e->getMessage()
             );
         }
-
-        return ApiResponse::send(
-            code: Response::HTTP_OK,
-            message: 'Booking status updated successfully',
-            data: new BookingResource($booking)
-        );
     }
 }

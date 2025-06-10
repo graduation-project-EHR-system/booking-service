@@ -4,10 +4,11 @@ namespace App\Services;
 
 use App\Data\BookingData;
 use App\Enums\BookingStatus;
+use App\Exceptions\InvalidBookingException;
 use App\Interfaces\BookingRepositoryInterface;
 use App\Models\Booking;
+use App\Models\DoctorAvailability;
 use App\Services\External\PatientProfileService;
-
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -20,9 +21,7 @@ class BookingService
     public function __construct(
         protected BookingRepositoryInterface $bookingRepository,
         protected PatientProfileService $patientProfileService
-        )
-    {
-    }
+    ) {}
 
     /**
      * Get all bookings with pagination
@@ -47,16 +46,18 @@ class BookingService
      */
     public function createBooking(BookingData $bookingData): Booking
     {
-        try{
+        try {
             $bookingData->booked_at = Carbon::now();
             $bookingData->status = BookingStatus::PENDING;
 
             $patientProfile = $this->patientProfileService->getById($bookingData->patient_id);
 
-            $bookingData->patient_name = $patientProfile->firstName . ' ' . $patientProfile->lastName;
+            $bookingData->patient_name = $patientProfile->firstName.' '.$patientProfile->lastName;
+
+            $this->validateAppointmentTime($bookingData);
 
             return $this->bookingRepository->createBooking($bookingData);
-        }catch (Exception $e){
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -73,10 +74,25 @@ class BookingService
             return null;
         }
 
+        $this->validateAppointmentTime($bookingData);
+
         // Update repository
         return $this->bookingRepository->updateBooking(
             $id,
             $bookingData
         );
+    }
+
+    protected function validateAppointmentTime(BookingData $bookingData): void
+    {
+        $isValidAppointmentTime = DoctorAvailability::where('doctor_id', $bookingData->doctor_id)
+            ->whereAll([
+                'date' => $bookingData->appointment_date,
+                'from' => '<=', $bookingData->appointment_time,
+                'to' => '>=', $bookingData->appointment_time,
+            ])
+            ->exists();
+
+        throw_if(! $isValidAppointmentTime, InvalidBookingException::dueToInvalidAppointmentTime());
     }
 }
